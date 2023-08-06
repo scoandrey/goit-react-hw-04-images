@@ -4,13 +4,11 @@ import Searchbar from './Searchbar/Searchbar';
 import Loader from './Loader/Loader';
 import React from 'react';
 import axios from 'axios';
-import { useAlert } from 'react-alert';
 import { getImage } from './api';
 
 axios.defaults.baseURL = 'https://pixabay.com/api';
 
 const App = () => {
-  const alert = useAlert();
   const [images, setImages] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -30,7 +28,7 @@ const App = () => {
       setPage(page + 1);
     } catch (e) {
       
-      alert.error(`Ошибка получения данных: ${e}`);
+      console.log(`Ошибка получения данных: ${e}`);
     } finally {
       setIsLoading(false);
     }
