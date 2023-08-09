@@ -2,18 +2,18 @@ import Button from './Button/Button';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Searchbar from './Searchbar/Searchbar';
 import Loader from './Loader/Loader';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getImage } from './api';
 
 axios.defaults.baseURL = 'https://pixabay.com/api';
 
 const App = () => {
-  const [images, setImages] = React.useState([]);
-  const [page, setPage] = React.useState(1);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [q, setQ] = React.useState('');
-  const [showLoadMoreButton, setShowLoadMoreButton] = React.useState(false);
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [q, setQ] = useState('');
+  const [showLoadMoreButton, setShowLoadMoreButton] = useState(false);
 
   const getData = async () => {
     setIsLoading(true);
@@ -27,14 +27,13 @@ const App = () => {
       setImages([...images, ...data.hits]);
       setPage(page + 1);
     } catch (e) {
-      
       console.log(`Ошибка получения данных: ${e}`);
     } finally {
       setIsLoading(false);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     q !== '' && getData().then();
     // eslint-disable-next-line
   }, [q]);
@@ -43,7 +42,6 @@ const App = () => {
     if (q === query) {
       return;
     }
-
     setImages([]);
     setPage(1);
     setQ(query);
@@ -62,3 +60,4 @@ const App = () => {
   );
 };
 export default App;
+// test
