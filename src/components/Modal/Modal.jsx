@@ -5,9 +5,9 @@ const Modal = ({ src, onClick }) => {
     const keyDown = e => {
       e.key === 'Escape' && onClick('');
     };
-    document.removeEventListener('keydown', keyDown, true);
+    window.addEventListener('keydown', keyDown, true);
 
-    return document.addEventListener('keydown', keyDown, true);
+    return () => window.removeEventListener('keydown', keyDown, true);
   }, [onClick]);
 
   const handleClick = e => {
