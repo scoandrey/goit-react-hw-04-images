@@ -1,20 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Modal = ({ src, onClick }) => {
-  const eventListeners = React.useRef();
-  const keyDown = React.useCallback(e => {
-    e.key === 'Escape' && onClick('');
-    // eslint-disable-next-line
-  }, []);
-  
+  useEffect(() => {
+    const keyDown = e => {
+      e.key === 'Escape' && onClick('');
+    };
+    document.removeEventListener('keydown', keyDown, true);
 
-  React.useEffect(() => {
-    document.removeEventListener('keydown', eventListeners.current, true);
-
-    eventListeners.current = keyDown;
-
-    document.addEventListener('keydown', eventListeners.current, true);
-  }, [keyDown]);
+    return document.addEventListener('keydown', keyDown, true);
+  }, [onClick]);
 
   const handleClick = e => {
     e.target === e.currentTarget && onClick('');

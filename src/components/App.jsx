@@ -15,28 +15,23 @@ const App = () => {
   const [q, setQ] = useState('');
   const [showLoadMoreButton, setShowLoadMoreButton] = useState(false);
 
-  const getData = async () => {
-    setIsLoading(true);
-    try {
-      const data = await getImage(page, q);
-
-      page < Math.ceil(data.totalHits / 12)
-        ? setShowLoadMoreButton(true)
-        : setShowLoadMoreButton(false);
-
-      setImages([...images, ...data.hits]);
-      setPage(page + 1);
-    } catch (e) {
-      console.log(`Ошибка получения данных: ${e}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    q !== '' && getData().then();
-    // eslint-disable-next-line
-  }, [q]);
+    const getData = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getImage(page, q);
+
+        setShowLoadMoreButton(page < Math.ceil(data.totalHits / 12));
+
+        setImages(prevState => [...prevState, ...data.hits]);
+      } catch (e) {
+        console.log(`Ошибка получения данных: ${e}`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    q !== '' && getData();
+  }, [q, page]);
 
   const onSubmit = query => {
     if (q === query) {
@@ -54,10 +49,9 @@ const App = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        showLoadMoreButton && <Button onClick={getData} />
+        showLoadMoreButton && <Button onClick={() => setPage(page + 1)} />
       )}
     </div>
   );
 };
 export default App;
-// test

@@ -1,13 +1,13 @@
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import Modal from 'components/Modal/Modal';
-import React from 'react';
+import React, { useState } from 'react';
 
 const ImageGallery = ({ images }) => {
-  const [src, setSrc] = React.useState('');
+  const [src, setSrc] = useState('');
 
   return (
     <>
-      <ul className='ImageGallery'>
+      <ul className="ImageGallery">
         {images.map(image => {
           return (
             <ImageGalleryItem key={image.id} image={image} onClick={setSrc} />
